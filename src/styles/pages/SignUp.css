@@ -1,0 +1,14 @@
+
+.loginDiv{
+    padding: 0;
+    padding-top: 10em;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btnLogin{
+    margin-right: 9em;
+}
