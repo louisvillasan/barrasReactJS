@@ -1,0 +1,17 @@
+.btnGroupResources{
+    margin-top: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* padding-top: 5em; */
+}
+
+.btnResources{
+    margin-right: 2em;
+    border-radius: 20px !important;
+}
+.tableData{
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 30px;
+}

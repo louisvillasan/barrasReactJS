@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import Getresources from '../components/GetResources';
 import Header from '../components/header';
 import Maininput from '../components/MainInput';
 
@@ -22,7 +23,12 @@ const Home = () => {
             <div>
                 <h1>Home</h1>
             </div>
-            <Maininput handleText={handleText} howManyLines={howManyLines} />
+            <Maininput 
+                handleText={handleText} 
+                howManyLines={howManyLines} 
+            />
+
+            <Getresources/>
         </>
     );
 }
