@@ -3,23 +3,22 @@ import { Form} from 'react-bootstrap'
 
 
 import '../styles/components/MainInput.css'
-const Maininput = ({handleText, howManyLines}) => {
-
-    return (
+const Maininput = ({handleDescription, height, description}) => {
+    return (       
+        <div>
+            <Form.Group className='formInput'>
+                <Form.Label>Barras</Form.Label>
+                    <Form.Control 
+                        id="textMain" 
+                        as="textarea" 
+                        onChange={handleDescription} 
+                        style={height}
+                        value={description}/>
+                            
+            </Form.Group>
+        </div> 
 
         
-
-        <Form.Group className='formInput' controlId="exampleForm.ControlTextarea1">
-            <Form.Label>Barras</Form.Label>
-            {
-                (howManyLines>15)   
-                    ? <Form.Control onChange={handleText} as="textarea" 
-                rows={howManyLines+2}/> 
-                    :<Form.Control onChange={handleText} as="textarea" 
-                rows="15"/>   
-            }
-          
-        </Form.Group>
     );
 }
 

@@ -1,0 +1,14 @@
+.divCreateProyect{
+    align-items: center;
+    align-content: center;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 2em;
+
+}
+
+.btnCreateProyect{
+    text-align: center;
+
+}

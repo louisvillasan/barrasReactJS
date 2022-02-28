@@ -1,36 +1,46 @@
-import React, {useState} from 'react';
-import Getresources from '../components/GetResources';
-import Header from '../components/header';
-import Maininput from '../components/MainInput';
+import React, {useContext, useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
+import UserContext from '../context/User/UserContext.js';
+import Proyectstate from '../context/Proyect/ProyectState.js';
+
+import Header from '../components/Header'
+import Proyect from './Proyect';
+import Edit from './Edit';
+
+
 
 const Home = () => {
 
-    const [text, setText] = useState('');
-    const [howManyLines, setHowManyLines] = useState(0);
+    const [component, setComponent] = useState(true);
+    const {setCurrentUser} = useContext(UserContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setCurrentUser()
+            .then(response => {if (!response) navigate('/register')})
+
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
 
-    const handleText = (e) =>{
-        const newText = e.target.value;
-        const isThereLines = newText.match(/\n/g);
-        if (isThereLines){
-            setHowManyLines(isThereLines.length);
-        }
-        setText(newText);
+    const handleComponent = () =>{
+        setComponent(!component);
     }
-    return (
-        <>
-            <Header/>
-            <div>
-                <h1>Home</h1>
-            </div>
-            <Maininput 
-                handleText={handleText} 
-                howManyLines={howManyLines} 
-            />
 
-            <Getresources/>
-        </>
-    );
+    const handleHome = () =>{
+        setComponent(true);
+    }
+
+    return (
+            <Proyectstate>
+                <Header handleHome={handleHome}/>
+                {(component) 
+                    ? <Proyect 
+                    handleComponent={handleComponent}/>                    
+                    : <Edit
+                    handleComponent={handleComponent} />}
+            </Proyectstate>
+                
+        );
 }
 
 export default Home;

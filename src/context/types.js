@@ -1,0 +1,14 @@
+
+// PROYECTS
+export const GET_PROYECT = 'GET_PROYECT';
+export const GET_PROYECTS = 'GET_PROYECTS';
+export const NEW_PROYECT = 'NEW_PROYECT';
+export const DELETE_PROYECT = 'DELETE_PROYECT';
+export const UPDATE_PROYECT = 'UPDATE_PROYECT';
+export const SET_CURRENT_PROYECT = 'SET_CURRENT_PROYECT';
+
+
+// USERS
+export const GET_USER = 'GET_USER';
+export const DELETE_CURRENT_USER = 'DELETE_CURRENT_USER';
+

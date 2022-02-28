@@ -1,0 +1,11 @@
+.inputColumn{
+    width: max-content;
+    margin: 0 !important;
+    padding: 0;
+    border: 0;
+}
+
+Col{
+    margin: 0;
+    padding: 0;
+}

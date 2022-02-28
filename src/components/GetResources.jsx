@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from 'react';
-// import {getDatamuse} from '../libs/datamuse';
-import axios from 'axios';
-import '../styles/components/GetResources.css';
+import React, {useState} from 'react';
+import useRimes from '../libs/useRimes.js'
 
-
-import {Button, 
-        ButtonGroup,
-        Form}       from 'react-bootstrap'
+import Resourcesbuttons from './ResourcesButtons.jsx';
 import Tabledata from './TableData';
+import {Form}  from 'react-bootstrap'
+
+
+
+import '../styles/components/GetResources.css';
 
 
 
@@ -15,44 +15,51 @@ const Getresources = () => {
     
     const [data, setData] = useState([]);
     const [word, setWord] = useState('');
+    const [loading, setLoading] = useState(false)
 
-    // const baseURL = 'https://api.datamuse.com/words?sp=sabor&v=es&max=40';
-    const baseURL = 'https://api.datamuse.com/words?ml=';
-
-    const handleData = (type)=>{
-        axios.get(`${baseURL}${word}&v=es&max=40`).then((response) => {
-            setData(response.data)
-        });
-    }
+    const {getFromDatamuse,
+           getFromRimar } = useRimes();
 
     const handleWord = (e)=>{
         setWord(e.target.value)
     }
 
-    useEffect(()=>{
-        console.log(data);
-    }, [data])
-
+    const handleData = (about)=>{
+        setLoading(true)
+        getFromDatamuse(about, word)
+            .then(response => setData(response))
+            .then(response => setLoading(false))
+            .catch(error => {throw error})
+    }
     
+
+
+    const handleScrap = ()=>{
+        setLoading(true)
+        getFromRimar(word)
+            .then(response=>setData(response))
+            .then(response => setLoading(false))
+            .catch(error => {throw error})
+        }
+
     return (
         <>
             <div className='btnGroupResources'>
+                <Form>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Palabra</Form.Label>
+                        <Form.Control 
+                            type="text" 
+                            placeholder="Introduce la palabra a usar"
+                            onChange={handleWord} />
+                    </Form.Group>
 
-            <Form>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Palabra</Form.Label>
-                    <Form.Control 
-                        type="text" 
-                        placeholder="Introduce la palabra a usar"
-                        onChange={handleWord} />
-                </Form.Group>
-                
-                <ButtonGroup  size="lg" className="mb-2">
-                    <Button className='btnResources'  onClick={()=>handleData('ml')} >Rima Perfecta</Button>
-                    <Button className='btnResources' >Rima</Button>
-                    <Button className='btnResources'>Palabra relacionada</Button>
-                </ButtonGroup>
-            </Form>
+                    <Resourcesbuttons
+                        loading={loading}
+                        handleData={handleData}
+                        handleScrap={handleScrap}/>
+                    
+                </Form>
             </div>
 
             <Tabledata data={data}/>
