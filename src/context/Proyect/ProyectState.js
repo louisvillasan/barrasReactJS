@@ -7,7 +7,7 @@ import ProyectContext from './ProyectContext';
 
 const Proyectstate = (props) => {
     
-    const API = process.env.REACT_APP_BASE_URL;
+    const API = 'https://agile-tundra-44286.herokuapp.com/api/v1/';
     
     const initialState = {
         proyects: [],
