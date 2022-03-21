@@ -5,6 +5,7 @@ import UserContext from '../context/User/UserContext.js';
 
 import {Form, Button} from 'react-bootstrap'
 import '../styles/pages/Login.css'
+import Errormessage from '../components/ErrorMessage.jsx';
 
 
 const Login = () => {
@@ -14,7 +15,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const {login, getLocaleUser} = useContext(UserContext);
+    const {login, getLocaleUser, error} = useContext(UserContext);
     
     useEffect(() => {
         getLocaleUser()
@@ -30,10 +31,10 @@ const Login = () => {
 
     const handleSubmit = (e)=>{
         e.preventDefault();
-        (!email && !password) 
-            ? alert('email or password empty')
-            : login(email,password)
-                .then(response => navigate('/'))
+        login(email,password)
+                .then(response => 
+                        response && navigate('/')
+                    )
     }
   
     return (
@@ -54,6 +55,10 @@ const Login = () => {
                 <Form.Label>Password</Form.Label>
                     <Form.Control onChange={handlePassword} type="password" placeholder="Password" />
                 </Form.Group>
+
+                {error.domElement === 'Login' &&
+                    <Errormessage message={error.message}/>}
+                
                 
                 <Button onClick={handleSubmit} className='btnLogin' variant="primary mr-1" type="submit">
                     Login

@@ -42,6 +42,7 @@ const Getresources = () => {
             .catch(error => {throw error})
         }
 
+        // FIXME: Responsive does not work properly 
     return (
         <>
             <div className='btnGroupResources'>

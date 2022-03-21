@@ -11,4 +11,5 @@ export const SET_CURRENT_PROYECT = 'SET_CURRENT_PROYECT';
 // USERS
 export const GET_USER = 'GET_USER';
 export const DELETE_CURRENT_USER = 'DELETE_CURRENT_USER';
-
+export const SET_ERROR = 'SET_ERROR';
+export const DELETE_ERROR  = 'DELETE_ERROR'

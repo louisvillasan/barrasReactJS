@@ -13,7 +13,12 @@ const UserState = (props)=>{
     const API = 'https://agile-tundra-44286.herokuapp.com/api/v1/';
 
     const initialState = {
-        currentUser: null
+        currentUser: null,
+        error: {
+            domElement: null,
+            message: '',
+
+        }
     }
 
     const [state, dispatch] = useReducer(UserReducer, initialState);
@@ -25,7 +30,7 @@ const UserState = (props)=>{
         });
     }
 
-    const setCurrentUser = () =>{
+    const setCurrentUser = async () =>{
         return getLocaleUser()
             .then(response => {dispatch({
                 type: 'GET_USER',
@@ -38,24 +43,59 @@ const UserState = (props)=>{
     }
 
     const login = async (email,password)=>{
-        return axios.post(`${API}auth/login`, {email, password})
-            .then(response => {setLocalDataUser(response.data); return response.data})
-            .then(response => {dispatch({
-                type: 'GET_USER',
-                payload: JSON.stringify(response)
-            }); return response})
-    }
 
-    const signUp = async (email,password, passwordcp)=>{
-            return axios.post(`${API}user`, {email, password})
-            .then(response  => {setLocalDataUser(response.data); return response.data})
-            .then(response => { 
-                    dispatch({
+        return (email !=='' && password!=='')
+            ?   axios.post(`${API}auth/login`, {email, password})
+                    .then(response => {setLocalDataUser(response.data); return response.data})
+                    .then(response => {dispatch({
                         type: 'GET_USER',
                         payload: JSON.stringify(response)
-                    }); 
-                    return response 
-                });
+                    }); return response})
+                    .catch(e => {dispatch({
+                        type: 'SET_ERROR',
+                        payload: {
+                            domElement: 'Login',
+                            message: 'Wrong email or password'
+                        }
+                        })
+                    })
+            : dispatch({
+                type: 'SET_ERROR',
+                        payload: {
+                            domElement: 'Login',
+                            message: 'Write and email or password please'
+                        }
+            });
+    }
+
+        
+
+    const signUp = async (email,password, passwordcp)=>{
+        return (email !=='' && password!==''  && password === passwordcp)
+            ?   axios.post(`${API}user`, {email, password})
+                    .then(response  => {setLocalDataUser(response.data); return response.data})
+                    .then(response => { 
+                            dispatch({
+                                type: 'GET_USER',
+                                payload: JSON.stringify(response)
+                            }); 
+                            return response 
+                        })
+                    .catch(e => {dispatch({
+                        type: 'SET_ERROR',
+                        payload: {
+                            domElement: 'SignUp',
+                            message: 'Use another Email please or try it later'
+                        }
+                        })
+                    })
+            : dispatch({
+                type: 'SET_ERROR',
+                        payload: {
+                            domElement: 'SignUp',
+                            message: 'Complete all the fields please, or check your passwords'
+                        }
+            });
     }
 
     const logout = ()=>{
@@ -66,6 +106,14 @@ const UserState = (props)=>{
         
     }
 
+    const clearError = ()=>{
+        setTimeout(()=>{
+            dispatch({
+                type: 'DELETE_ERROR'
+            })
+        }, 5000)
+    }
+
 
     
 
@@ -73,11 +121,13 @@ const UserState = (props)=>{
     return (
         <UserContext.Provider value={{
             currentUser: state.currentUser,
+            error: state.error,
             login,
             signUp,
             logout,
             setCurrentUser,
-            getLocaleUser
+            getLocaleUser,
+            clearError
 
         }}>
             {props.children}

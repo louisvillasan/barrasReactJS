@@ -2,6 +2,7 @@ import React, {useEffect, useState, useContext} from 'react';
 import {Link, useNavigate} from 'react-router-dom'
 import {Form, Button} from 'react-bootstrap'
 import UserContext from '../context/User/UserContext.js';
+import Errormessage from '../components/ErrorMessage.jsx';
 
 const Signup = () => {
 
@@ -10,7 +11,7 @@ const Signup = () => {
     const [passwordcp, setPasswordcp] = useState('');
     const navigate = useNavigate();
 
-    const {signUp, getLocaleUser} = useContext(UserContext);
+    const {signUp, getLocaleUser, error} = useContext(UserContext);
 
     useEffect(() => {
         getLocaleUser()
@@ -29,12 +30,8 @@ const Signup = () => {
 
     const handleSubmit = (e)=>{
         e.preventDefault();
-        ((!email && !password) || (password !== passwordcp))
-            ? alert('wrong data')
-            : signUp(email,password, passwordcp)
-                .then(response => navigate('/'))
-                .catch(e => alert('Wrong data'))
-
+        signUp(email,password, passwordcp)
+            .then(response => response && navigate('/'))
     }
 
 
@@ -61,7 +58,8 @@ const Signup = () => {
                     <Form.Label>Confirm password</Form.Label>
                     <Form.Control onChange={handlePasswordcp}  type="password" placeholder="Password" />
                 </Form.Group>
-                
+                {error.domElement === 'SignUp' && 
+                    <Errormessage message={error.message}/>}
                 <Button onClick={handleSubmit} className='btnLogin' variant="primary mr-1" type="submit">
                     Sign up
                 </Button>
